@@ -1,0 +1,26 @@
+<annotation>
+	<folder>50</folder>
+	<filename>WhatsApp Image 2026-09-01 at 22.53.24 (1).jpeg</filename>
+	<path>C:\Users\vanis\OneDrive\Desktop\currencydetection\Tensorflow\workspace\images\collectedimages\50\WhatsApp Image 2026-09-01 at 22.53.24 (1).jpeg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>1600</width>
+		<height>1200</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>50</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>428</xmin>
+			<ymin>339</ymin>
+			<xmax>1147</xmax>
+			<ymax>1076</ymax>
+		</bndbox>
+	</object>
+</annotation>

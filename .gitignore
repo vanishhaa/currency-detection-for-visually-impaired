@@ -1,0 +1,8 @@
+tfod/
+models/
+Tensorflow/workspace/pre-trained-models/
+Tensorflow/workspace/models/my_ssd_mobilenet/ckpt-*
+Tensorflow/workspace/models/my_ssd_mobilenet/checkpoint
+*.record
+__pycache__/
+*.pyc
