@@ -1,8 +1,13 @@
 import os, random, shutil
 
+# Define the path containing the collected images 
 SRC = 'Tensorflow/workspace/images/collectedimages'
+
+#Define  folders for training and testing datasets 
 TRAIN = 'Tensorflow/workspace/images/train'
 TEST = 'Tensorflow/workspace/images/test'
+
+#ratio of images to be used for training 
 SPLIT = 0.8
 
 os.makedirs(TRAIN, exist_ok=True)
@@ -22,6 +27,8 @@ for label in os.listdir(SRC):
             base, orig_ext = os.path.splitext(img)
             for ext in [orig_ext, '.xml']:
                 src_file = os.path.join(label_dir, base + ext)
+
+                #Copy the file if it exits
                 if os.path.exists(src_file):
                     shutil.copy(src_file, os.path.join(dest, base + ext))
 
