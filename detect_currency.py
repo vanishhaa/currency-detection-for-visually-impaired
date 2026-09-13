@@ -9,8 +9,12 @@ from object_detection.builders import model_builder
 from object_detection.utils import config_util
 
 # ---- CONFIG ----
+# Path to the pipeline config used to train the SSD MobileNet model
 PIPELINE_CONFIG = 'Tensorflow/workspace/models/my_ssd_mobilenet/pipeline.config'
-CHECKPOINT_PATH = 'Tensorflow/workspace/models/my_ssd_mobilenet/ckpt-3'  # <-- update number
+# Path to the specific training checkpoint to restore weights from
+CHECKPOINT_PATH = 'Tensorflow/workspace/models/my_ssd_mobilenet/ckpt-3'
+  # <-- update number
+  # Path to the label map that maps class IDs to rupee note denominations
 LABEL_MAP_PATH = 'Tensorflow/workspace/annotations/label_map.pbtxt'
 MIN_SCORE_THRESH = 0.6
 ANNOUNCE_COOLDOWN = 3  # seconds between repeated announcements of the same class
@@ -52,6 +56,7 @@ while True:
         print("Failed to grab frame from webcam.")
         break
 
+     # Convert frame to a tensor batch of size 1, as float32 for the model
     image_np = np.array(frame)
     input_tensor = tf.convert_to_tensor(np.expand_dims(image_np, 0), dtype=tf.float32)
     detections = detect_fn(input_tensor)
@@ -73,6 +78,7 @@ while True:
         agnostic_mode=False)
 
     # Announce the highest-confidence detection above threshold
+    # so multiple overlapping boxes don't trigger multiple announcements
     if num_detections > 0:
         best_idx = np.argmax(detections['detection_scores'])
         best_score = detections['detection_scores'][best_idx]
@@ -80,7 +86,7 @@ while True:
             class_id = int(detections['detection_classes'][best_idx])
             label = category_index[class_id]['name']
             announce(label)
-
+     # Show the annotated frame; quit loop on 'q' keypress
     cv2.imshow('Currency Detection', image_np_with_detections)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
