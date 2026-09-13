@@ -10,6 +10,7 @@ from object_detection.utils import config_util
 
 # ---- CONFIG ----
 # Path to the pipeline config used to train the SSD MobileNet model
+# Path to the pipeline config used to train the SSD MobileNet model
 PIPELINE_CONFIG = 'Tensorflow/workspace/models/my_ssd_mobilenet/pipeline.config'
 # Path to the specific training checkpoint to restore weights from
 CHECKPOINT_PATH = 'Tensorflow/workspace/models/my_ssd_mobilenet/ckpt-3'  # <-- update number
