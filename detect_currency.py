@@ -13,8 +13,8 @@ PIPELINE_CONFIG = 'Tensorflow/workspace/models/my_ssd_mobilenet/pipeline.config'
 CHECKPOINT_PATH = 'Tensorflow/workspace/models/my_ssd_mobilenet/ckpt-3'  # <-- update number
 LABEL_MAP_PATH = 'Tensorflow/workspace/annotations/label_map.pbtxt'
 MIN_SCORE_THRESH = 0.6
-ANNOUNCE_COOLDOWN = 3  # seconds between repeated announcements of the same class
-
+ANNOUNCE_COOLDOWN = 5 # seconds between repeated announcements of the same class
+STABLE_FRAMES_NEEDED = 5
 # ---- LOAD MODEL ----
 configs = config_util.get_configs_from_pipeline_file(PIPELINE_CONFIG)
 detection_model = model_builder.build(model_config=configs['model'], is_training=False)
@@ -25,17 +25,28 @@ ckpt.restore(CHECKPOINT_PATH).expect_partial()
 category_index = label_map_util.create_category_index_from_labelmap(LABEL_MAP_PATH)
 
 # ---- TTS SETUP ----
-engine = pyttsx3.init()
-engine.setProperty('rate', 160)
-last_announced = {}
+tts_engine = pyttsx3.init()
+tts_engine.setProperty('rate', 160)
+
+last_spoken_time = 0
+last_label = None
+stable_count = 0
 
 def announce(label):
+    global last_spoken_time, last_label, stable_count
     now = time.time()
-    if label not in last_announced or now - last_announced[label] > ANNOUNCE_COOLDOWN:
-        engine.say(f"{label} rupee note detected")
-        engine.runAndWait()
-        last_announced[label] = now
 
+    if label == last_label:
+        stable_count += 1
+    else:
+        stable_count = 1
+        last_label = label
+
+    if stable_count >= STABLE_FRAMES_NEEDED and (now - last_spoken_time) > ANNOUNCE_COOLDOWN:
+        tts_engine.stop()
+        tts_engine.say(f"{label} rupee note detected")
+        tts_engine.runAndWait()
+        last_spoken_time = now
 @tf.function
 def detect_fn(image):
     image, shapes = detection_model.preprocess(image)
