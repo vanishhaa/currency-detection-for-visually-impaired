@@ -1,6 +1,6 @@
 import os, random, shutil
 
-# Define the path containing the collected images 
+
 SRC = 'Tensorflow/workspace/images/collectedimages'
 
 #Define  folders for training and testing datasets 
